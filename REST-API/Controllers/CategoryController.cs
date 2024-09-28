@@ -22,7 +22,7 @@ public class CategoryController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("GetAllCategories")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Category>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAllCategories()
@@ -38,7 +38,7 @@ public class CategoryController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("GetCategoryById/{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetCategoryById(int? id)
@@ -63,7 +63,7 @@ public class CategoryController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [Route("AddCategory")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddCategory(AddCategoryRequest addCategoryRequest)
@@ -91,7 +91,7 @@ public class CategoryController : ControllerBase
     /// <returns></returns>
     [HttpPut]
     [Route("EditCategory")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Category), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> EditCategory(EditCategoryRequest editCategoryRequest)
