@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using REST_API.Domain;
 
 namespace REST_API.Data;
 
@@ -8,5 +9,5 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    
+    public DbSet<Category> Categories { get; set; }
 }
