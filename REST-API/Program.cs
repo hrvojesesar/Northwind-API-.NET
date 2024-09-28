@@ -72,6 +72,7 @@ builder.Services.AddHealthChecks()
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<IShipperRepository, ShipperRepository>();
 
 var app = builder.Build();
 
