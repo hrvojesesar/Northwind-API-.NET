@@ -13,4 +13,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Shipper> Shippers { get; set; }
     public DbSet<Region> Region { get; set; }
+    public DbSet<CustomerDemographic> CustomerDemographics { get; set; }
 }
