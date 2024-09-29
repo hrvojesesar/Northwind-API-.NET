@@ -12,4 +12,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Shipper> Shippers { get; set; }
+    public DbSet<Region> Region { get; set; }
 }
