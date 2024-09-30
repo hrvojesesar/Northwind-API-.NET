@@ -36,23 +36,6 @@ public class CustomerCustomerDemoRepository : ICustomerCustomerDemoRepository
         return customerCustomerDemo;
     }
 
-    public async Task<CustomerCustomerDemo> EditCustomerCustomerDemoAsync(CustomerCustomerDemo customerCustomerDemo)
-    {
-        var existingCustomerCustomerDemo = await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerCustomerDemo.CustomerID && x.CustomerTypeID == customerCustomerDemo.CustomerTypeID);
-
-        if (existingCustomerCustomerDemo == null)
-        {
-            return null;
-        }
-
-        existingCustomerCustomerDemo.CustomerID = customerCustomerDemo.CustomerID;
-        existingCustomerCustomerDemo.CustomerTypeID = customerCustomerDemo.CustomerTypeID;
-
-        _context.CustomerCustomerDemo.Update(existingCustomerCustomerDemo);
-        await _context.SaveChangesAsync();
-        return existingCustomerCustomerDemo;
-    }
-
     public async Task<bool> DeleteCustomerCustomerDemoAsync(string? customerID, string? customerTypeID)
     {
         var customerCustomerDemo = await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerID && x.CustomerTypeID == customerTypeID);

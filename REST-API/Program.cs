@@ -80,6 +80,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerCustomerDemoRepository, CustomerCustomerDemoRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeTerritoryRepository, EmployeeTerritoryRepository>();
 
 var app = builder.Build();
 

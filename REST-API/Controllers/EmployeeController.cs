@@ -7,7 +7,7 @@ namespace REST_API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmployeeController : Controller
+public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeRepository _employeeRepository;
 
