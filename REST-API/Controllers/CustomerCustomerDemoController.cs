@@ -93,4 +93,30 @@ public class CustomerCustomerDemoController : ControllerBase
         var addedCustomerCustomerDemo = await _customerCustomerDemoRepository.AddCustomerCustomerDemoAsync(customerCustomerDemo);
         return CreatedAtAction(nameof(GetCustomerCustomerDemoById), new { customerID = addedCustomerCustomerDemo.CustomerID, customerTypeID = addedCustomerCustomerDemo.CustomerTypeID }, addedCustomerCustomerDemo);
     }
+
+    /// <summary>
+    /// Delete a CustomerCustomerDemo by IDs
+    /// </summary>
+    /// <param name="customerID"></param>
+    /// <param name="customerTypeID"></param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("api/DeleteCustomerCustomerDemo")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DeleteCustomerCustomerDemo(string? customerID, string? customerTypeID)
+    {
+        if (customerID == null || customerTypeID == null)
+        {
+            return BadRequest();
+        }
+
+        var isDeleted = await _customerCustomerDemoRepository.DeleteCustomerCustomerDemoAsync(customerID, customerTypeID);
+        if (!isDeleted)
+        {
+            return NotFound("Customer customer demo not found!");
+        }
+        return Ok($"Customer customer demo with customerID: {customerID} and customerTypeID: {customerTypeID} deleted successfully!");
+    }
 }

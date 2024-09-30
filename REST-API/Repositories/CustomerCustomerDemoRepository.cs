@@ -52,4 +52,18 @@ public class CustomerCustomerDemoRepository : ICustomerCustomerDemoRepository
         await _context.SaveChangesAsync();
         return existingCustomerCustomerDemo;
     }
+
+    public async Task<bool> DeleteCustomerCustomerDemoAsync(string? customerID, string? customerTypeID)
+    {
+        var customerCustomerDemo = await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerID && x.CustomerTypeID == customerTypeID);
+
+        if (customerCustomerDemo == null)
+        {
+            return false;
+        }
+
+        _context.CustomerCustomerDemo.Remove(customerCustomerDemo);
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }
