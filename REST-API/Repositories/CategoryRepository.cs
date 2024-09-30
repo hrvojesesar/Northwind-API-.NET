@@ -51,7 +51,7 @@ public class CategoryRepository : ICategoryRepository
 
         _context.Categories.Update(existingCategory);
         await _context.SaveChangesAsync();
-        return category;
+        return existingCategory;
     }
 
     public async Task<bool> DeleteCategoryAsync(int? id)
