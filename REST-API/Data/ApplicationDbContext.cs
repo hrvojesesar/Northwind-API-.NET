@@ -16,4 +16,5 @@ public class ApplicationDbContext : DbContext
     public DbSet<CustomerDemographic> CustomerDemographics { get; set; }
     public DbSet<Territory> Territories { get; set; }
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
 }

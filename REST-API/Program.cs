@@ -77,6 +77,7 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<ICustomerDemographicRepository, CustomerDemographicRepository>();
 builder.Services.AddScoped<ITerritoryRepository, TerritoryRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<ICustomerCustomerDemoRepository, CustomerCustomerDemoRepository>();
 
 var app = builder.Build();
 
