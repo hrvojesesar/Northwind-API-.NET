@@ -19,4 +19,18 @@ public class ApplicationDbContext : DbContext
     public DbSet<CustomerCustomerDemo> CustomerCustomerDemo { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CustomerCustomerDemo>()
+           .HasKey(ccd => new { ccd.CustomerID, ccd.CustomerTypeID });
+
+        modelBuilder.Entity<EmployeeTerritory>()
+           .HasKey(et => new { et.EmployeeID, et.TerritoryID });
+
+        base.OnModelCreating(modelBuilder);
+    }
+
+  
 }
