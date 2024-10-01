@@ -70,6 +70,7 @@ builder.Services.AddHealthChecks()
     }, tags: new[] { "disk" })
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: new[] { "self" });
 
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
