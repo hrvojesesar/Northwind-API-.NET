@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using REST_API.Commands.EmployeeTerritory;
+using REST_API.Data;
 using REST_API.Domain;
 using REST_API.Interfaces;
 
@@ -10,10 +12,12 @@ namespace REST_API.Controllers;
 public class EmployeeTeritoryController : ControllerBase
 {
     private readonly IEmployeeTerritoryRepository _employeeTerritoryRepository;
+    private readonly ApplicationDbContext _context;
 
-    public EmployeeTeritoryController(IEmployeeTerritoryRepository employeeTerritoryRepository)
+    public EmployeeTeritoryController(IEmployeeTerritoryRepository employeeTerritoryRepository, ApplicationDbContext context)
     {
         _employeeTerritoryRepository = employeeTerritoryRepository;
+        _context = context;
     }
 
     /// <summary>
@@ -28,8 +32,36 @@ public class EmployeeTeritoryController : ControllerBase
     public async Task<IActionResult> GetAllEmployeeTerritories()
     {
         var employeeTerritories = await _employeeTerritoryRepository.GetAllEmployeeTerritoriesAsync();
+
+        if (employeeTerritories == null || !employeeTerritories.Any())
+        {
+            return NotFound();
+        }
+
+        var employeeIDs = employeeTerritories.Select(et => et.EmployeeID).ToList();
+        var territoryIDs = employeeTerritories.Select(et => et.TerritoryID).ToList();
+
+        var employees = await _context.Employees
+            .Where(e => employeeIDs.Contains(e.EmployeeID))
+            .ToDictionaryAsync(e => e.EmployeeID, e => e.FirstName + " " + e.LastName);
+
+        var territories = await _context.Territories
+            .Where(t => territoryIDs.Contains(t.TerritoryID))
+            .ToDictionaryAsync(t => t.TerritoryID, t => t.TerritoryDescription.Trim());
+
+        foreach (var employeeTerritory in employeeTerritories)
+        {
+            employees.TryGetValue(employeeTerritory.EmployeeID, out var employeeName);
+            territories.TryGetValue(employeeTerritory.TerritoryID, out var territoryDescription);
+
+            employeeTerritory.Employee = employeeName ?? "Unknown";
+            employeeTerritory.Territory = territoryDescription ?? "Unknown";
+        }
+
         return Ok(employeeTerritories);
     }
+
+
     /// <summary>
     /// Get EmployeeTerritory by EmployeeId and TerritoryId
     /// </summary>
@@ -37,7 +69,7 @@ public class EmployeeTeritoryController : ControllerBase
     /// <param name="territoryId"></param>
     /// <returns></returns>
     [HttpGet]
-    [Route("GetEmployeeTerritoryById")]
+    [Route("GetEmployeeTerritoryById/{employeeId}/{territoryId}")]
     [ProducesResponseType(typeof(EmployeeTerritory), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -55,8 +87,21 @@ public class EmployeeTeritoryController : ControllerBase
             return NotFound();
         }
 
+        var et = new EmployeeTerritory(_context)
+        {
+            EmployeeID = employeeTerritory.EmployeeID,
+            TerritoryID = employeeTerritory.TerritoryID
+        };
+        await et.LoadEmployeeAndTerritoryDetailsAsync();
+
+        et.Territory = et.Territory?.Trim();
+
+        employeeTerritory.Employee = et.Employee;
+        employeeTerritory.Territory = et.Territory;
+
         return Ok(employeeTerritory);
     }
+
 
     /// <summary>
     /// Add EmployeeTerritory
@@ -104,7 +149,7 @@ public class EmployeeTeritoryController : ControllerBase
     /// <param name="territoryId"></param>
     /// <returns></returns>
     [HttpDelete]
-    [Route("DeleteEmployeeTerritory")]
+    [Route("DeleteEmployeeTerritory/{employeeId}/{territoryId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

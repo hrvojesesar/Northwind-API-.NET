@@ -43,7 +43,7 @@ public class CustomerController : ControllerBase
     /// <param name="customerId"></param>
     /// <returns></returns>
     [HttpGet]
-    [Route("GetCustomerById")]
+    [Route("GetCustomerById/{customerId}")]
     [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -167,7 +167,7 @@ public class CustomerController : ControllerBase
     /// <param name="customerId"></param>
     /// <returns></returns>
     [HttpDelete]
-    [Route("DeleteCustomer")]
+    [Route("DeleteCustomer/{customerId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -19,9 +19,9 @@ public class CustomerCustomerDemoRepository : ICustomerCustomerDemoRepository
         return await _context.CustomerCustomerDemo.ToListAsync();
     }
 
-    public async Task<CustomerCustomerDemo> GetCustomerCustomerDemoByIdAsync(string? customerID, string? customerTypeID)
+    public async Task<CustomerCustomerDemo> GetCustomerCustomerDemoByIdAsync(string? customerId, string? customerTypeId)
     {
-        return await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerID && x.CustomerTypeID == customerTypeID);
+        return await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerId && x.CustomerTypeID == customerTypeId);
     }
 
     public async Task<CustomerCustomerDemo> AddCustomerCustomerDemoAsync(CustomerCustomerDemo customerCustomerDemo)
@@ -36,9 +36,9 @@ public class CustomerCustomerDemoRepository : ICustomerCustomerDemoRepository
         return customerCustomerDemo;
     }
 
-    public async Task<bool> DeleteCustomerCustomerDemoAsync(string? customerID, string? customerTypeID)
+    public async Task<bool> DeleteCustomerCustomerDemoAsync(string? customerId, string? customerTypeId)
     {
-        var customerCustomerDemo = await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerID && x.CustomerTypeID == customerTypeID);
+        var customerCustomerDemo = await _context.CustomerCustomerDemo.FirstOrDefaultAsync(x => x.CustomerID == customerId && x.CustomerTypeID == customerTypeId);
 
         if (customerCustomerDemo == null)
         {

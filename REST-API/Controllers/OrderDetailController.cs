@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using REST_API.Commands.OrderDetail;
+using REST_API.Data;
 using REST_API.Domain;
 using REST_API.Interfaces;
 
@@ -10,10 +12,12 @@ namespace REST_API.Controllers;
 public class OrderDetailController : ControllerBase
 {
     private readonly IOrderDetailRepository orderDetailRepository;
+    private readonly ApplicationDbContext _context;
 
-    public OrderDetailController(IOrderDetailRepository orderDetailRepository)
+    public OrderDetailController(IOrderDetailRepository orderDetailRepository, ApplicationDbContext context)
     {
         this.orderDetailRepository = orderDetailRepository;
+        _context = context;
     }
 
     /// <summary>
@@ -28,6 +32,32 @@ public class OrderDetailController : ControllerBase
     public async Task<IActionResult> GetAllOrderDetails()
     {
         var orderDetails = await orderDetailRepository.GetAllOrderDetailsAsync();
+
+        if (orderDetails == null || !orderDetails.Any())
+        {
+            return NotFound();
+        }
+
+        var orderIDs = orderDetails.Select(od => od.OrderID).ToList();
+        var productIDs = orderDetails.Select(od => od.ProductID).ToList();
+
+        var orders = await _context.Orders
+             .Where(o => orderIDs.Contains(o.OrderID))
+             .ToDictionaryAsync(o => o.OrderID, o => o.ShipName);
+
+        var products = await _context.Products
+            .Where(p => productIDs.Contains(p.ProductID))
+            .ToDictionaryAsync(p => p.ProductID, p => p.ProductName);
+
+        foreach (var orderDetail in orderDetails)
+        {
+            orders.TryGetValue(orderDetail.OrderID, out var shipName);
+            products.TryGetValue(orderDetail.ProductID, out var productName);
+
+            orderDetail.OrderName = shipName ?? "Unknown";
+            orderDetail.ProductName = productName ?? "Unknown";
+        }
+
         return Ok(orderDetails);
     }
 
@@ -38,7 +68,7 @@ public class OrderDetailController : ControllerBase
     /// <param name="productId"></param>
     /// <returns></returns>
     [HttpGet]
-    [Route("GetOrderDetailById")]
+    [Route("GetOrderDetailById/{orderId}/{productId}")]
     [ProducesResponseType(typeof(OrderDetail), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -54,6 +84,20 @@ public class OrderDetailController : ControllerBase
         {
             return NotFound("Order detail not found!");
         }
+
+        var od = new OrderDetail(_context)
+        {
+            OrderID = orderDetail.OrderID,
+            ProductID = orderDetail.ProductID,
+            UnitPrice = orderDetail.UnitPrice,
+            Quantity = orderDetail.Quantity,
+            Discount = orderDetail.Discount
+        };
+        await od.LoadOrderAndProductDetailsAsync();
+
+        orderDetail.OrderName = od.OrderName;
+        orderDetail.ProductName = od.ProductName;
+
         return Ok(orderDetail);
     }
 
@@ -158,7 +202,7 @@ public class OrderDetailController : ControllerBase
     /// <param name="productId"></param>
     /// <returns></returns>
     [HttpDelete]
-    [Route("DeleteOrderDetail")]
+    [Route("DeleteOrderDetail/{orderId}/{productId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
