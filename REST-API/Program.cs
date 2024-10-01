@@ -81,6 +81,7 @@ builder.Services.AddScoped<ICustomerCustomerDemoRepository, CustomerCustomerDemo
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeTerritoryRepository, EmployeeTerritoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
 

@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
