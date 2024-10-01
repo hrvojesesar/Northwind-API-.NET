@@ -21,6 +21,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +30,9 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<EmployeeTerritory>()
            .HasKey(et => new { et.EmployeeID, et.TerritoryID });
+
+        modelBuilder.Entity<OrderDetail>()
+            .HasKey(od => new { od.OrderID, od.ProductID });
 
         base.OnModelCreating(modelBuilder);
     }
