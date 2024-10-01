@@ -120,7 +120,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.File("logs\\log.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 app.UseHttpsRedirection();
