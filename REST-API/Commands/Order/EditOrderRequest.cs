@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace REST_API.Commands.Order;
-
 public class EditOrderRequest
 {
     public int OrderID { get; set; }

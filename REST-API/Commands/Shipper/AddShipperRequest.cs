@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace REST_API.Commands.Shipper;
-
 public class AddShipperRequest
 {
     [Required]

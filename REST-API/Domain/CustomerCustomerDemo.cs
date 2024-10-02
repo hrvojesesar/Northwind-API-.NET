@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using REST_API.Data;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace REST_API.Domain;

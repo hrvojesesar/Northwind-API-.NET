@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace REST_API.Commands.Product;
-
 public class AddProductRequest
 {
     [Required]

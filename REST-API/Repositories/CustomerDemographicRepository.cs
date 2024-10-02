@@ -74,6 +74,4 @@ public class CustomerDemographicRepository : ICustomerDemographicRepository
         await applicationDbContext.SaveChangesAsync();
         return true;
     }
-
-
 }

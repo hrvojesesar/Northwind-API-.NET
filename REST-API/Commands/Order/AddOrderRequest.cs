@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace REST_API.Commands.Order;
-
 public class AddOrderRequest
 {
     [StringLength(5)]

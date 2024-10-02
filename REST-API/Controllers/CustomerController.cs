@@ -10,7 +10,6 @@ namespace REST_API.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerRepository _customerRepository;
-
     public CustomerController(ICustomerRepository customerRepository)
     {
         _customerRepository = customerRepository;
@@ -188,4 +187,3 @@ public class CustomerController : ControllerBase
         return Ok($"Customer with id: {customerId} is successfully deleted!");
     }
 }
-

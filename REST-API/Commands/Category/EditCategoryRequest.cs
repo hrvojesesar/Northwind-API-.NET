@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace REST_API.Commands.Category;
-
 public class EditCategoryRequest
 {
     public int CategoryID { get; set; }
